@@ -6,6 +6,7 @@ import java.util.Map;
 public class World {
     public static void main(String[] args) {
         System.out.println("system wystartował");
+        OptionsParser parser = new OptionsParser();
         //String[] dirs = args;
         //run1(dirs);
         //run2(dirs);
@@ -24,6 +25,21 @@ public class World {
             System.out.println(dir.toUnitVector());
         }
 
+        Animal a1 = new Animal();
+        System.out.println(a1.toString());
+
+        MoveDirection[] movelist = {MoveDirection.RIGHT, MoveDirection.FORWARD, MoveDirection.FORWARD,MoveDirection.FORWARD};
+        for (MoveDirection move:movelist) {
+            a1.move(move);
+        }
+        System.out.println(a1.toString());
+
+        MoveDirection[] m = parser.parse(args);
+        for (MoveDirection move: m) {
+            System.out.println(move.toString());
+            a1.move(move);
+        }
+        System.out.println(a1.toString());
         System.out.println("system zakończył działanie");
     }
 
@@ -72,3 +88,7 @@ public class World {
             else{return Direction.NULL;}
     }
 }
+
+//Odpowiedz na punkt 10 w lab3 - mechanizm wykluczajacy pojawienie sie dwoch zwierzat w tym samym miejscu - sprawdzenie
+//w konstruktorze czy dane miejsce jest wolne, jeśli nie, to pojscie w randomowym kierunku i ponowienie sprawdzenia
+//(dopóki nie znajdzie sie miejsce, lub jeśli wszystkie miejsca sa zapelnione - te wartosc mozna przechowywac w osobnej zmiennej)
