@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 public class AnimalTest {
     @Test
     public void testMove(){
-        Animal a = new Animal();
-        Animal b = new Animal();
+
+        IWorldMap map = new RectangularMap(5, 5);
+        Animal a = new Animal(map, new Vector2d(2,2));
+        Animal b = new Animal(map, new Vector2d(3,4));
         MapDirection[] dirs1 = {MapDirection.EAST, MapDirection.SOUTH, MapDirection.WEST, MapDirection.NORTH};
         MapDirection[] dirs2 = {MapDirection.WEST, MapDirection.SOUTH, MapDirection.EAST, MapDirection.NORTH};
 
@@ -18,8 +20,8 @@ public class AnimalTest {
             Assertions.assertEquals(b.getOrientation(), dirs1[i]);
         }
 
-        Animal c = new Animal();
-        Animal d = new Animal();
+        Animal c = new Animal(map, new Vector2d(2,2));
+        Animal d = new Animal(map, new Vector2d(3,4));
 
         for (int i = 0; i < 10; i++) {
             c.move(MoveDirection.FORWARD);
@@ -31,7 +33,7 @@ public class AnimalTest {
             c.move(MoveDirection.FORWARD);
             d.move(MoveDirection.BACKWARD);
         }
-        Assertions.assertEquals(c.getPosition(), new Vector2d(4,4));
+        Assertions.assertEquals(c.getPosition(), new Vector2d(5,5));
         Assertions.assertEquals(d.getPosition(), new Vector2d(0,0));
     }
 

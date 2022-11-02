@@ -4,8 +4,25 @@ public class Animal {
     private Vector2d position = new Vector2d(2,2);
     private MapDirection orientation = MapDirection.NORTH;
 
+    private IWorldMap map;
+
+    public Animal(IWorldMap map){
+        this.map = map;
+    }
+
+    public Animal(IWorldMap map, Vector2d initialPosition){
+        this.map = map;
+        this.position = initialPosition;
+    }
+
     public String toString(){
-        String res = new String(position.toString() +", "+orientation.toString());
+        //String res = new String(position.toString() +", "+orientation.toString());
+        String res = switch(orientation){
+            case NORTH -> "^";
+            case EAST -> ">";
+            case SOUTH -> "v";
+            case WEST -> "<";
+        };
         return res;
     }
 
@@ -19,15 +36,19 @@ public class Animal {
     }
 
     public void move(MoveDirection dir){
-        Vector2d original = position;
         switch (dir){
             case LEFT -> orientation = orientation.previous();
             case RIGHT -> orientation = orientation.next();
-            case FORWARD -> position = position.add(orientation.toUnitVector());
-            case BACKWARD -> position = position.subtract(orientation.toUnitVector());
-        }
-        if(position.x > 4 || position.y > 4 || position.x < 0 || position.y<0){
-            position = original;
+            case FORWARD -> {
+                if(map.canMoveTo(position.add(orientation.toUnitVector()))){
+                        position = position.add(orientation.toUnitVector());
+                        }
+            }
+            case BACKWARD -> {
+                if(map.canMoveTo(position.subtract(orientation.toUnitVector()))){
+                    position = position.subtract(orientation.toUnitVector());
+                }
+            }
         }
     }
 
