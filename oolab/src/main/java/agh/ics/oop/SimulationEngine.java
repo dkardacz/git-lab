@@ -17,14 +17,14 @@ public class SimulationEngine implements IEngine{
             Animal a = new Animal(map, pos);
             map.place(a);
         }
-        int count = positions.length;
-        int i = 0;
+
+
         ArrayList<Animal> animals = map.getAnimals();
-        while(i < directions.length){
+        int count = animals.toArray().length;
+        for (int i = 0; i < directions.length; i++) {
             Animal a = animals.get(i%count);
             a.move(directions[i]);
-            i+=1;
         }
-        map.toString();
+        System.out.println(map.toString());
     }
 }

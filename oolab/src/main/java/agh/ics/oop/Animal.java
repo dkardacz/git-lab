@@ -1,6 +1,6 @@
 package agh.ics.oop;
 
-public class Animal {
+public class Animal implements IMapElement {
     private Vector2d position = new Vector2d(2,2);
     private MapDirection orientation = MapDirection.NORTH;
 
@@ -41,11 +41,29 @@ public class Animal {
             case RIGHT -> orientation = orientation.next();
             case FORWARD -> {
                 if(map.canMoveTo(position.add(orientation.toUnitVector()))){
+                        if(map.isOccupied(position.add(orientation.toUnitVector()))){
+                            if(map.objectAt(position.add(orientation.toUnitVector())) instanceof Grass){
+                                map.getMapElements().remove(map.objectAt(position.add(orientation.toUnitVector())));
+                                if(map instanceof GrassField){
+                                    GrassField gmap = (GrassField) map;
+                                    gmap.generateGrass();
+                                }
+                            }
+                        }
                         position = position.add(orientation.toUnitVector());
                         }
             }
             case BACKWARD -> {
                 if(map.canMoveTo(position.subtract(orientation.toUnitVector()))){
+                    if(map.isOccupied(position.subtract(orientation.toUnitVector()))){
+                        if(map.objectAt(position.subtract(orientation.toUnitVector())) instanceof Grass){
+                            map.getMapElements().remove(map.objectAt(position.subtract(orientation.toUnitVector())));
+                            if(map instanceof GrassField){
+                                GrassField gmap = (GrassField) map;
+                                gmap.generateGrass();
+                            }
+                        }
+                    }
                     position = position.subtract(orientation.toUnitVector());
                 }
             }
