@@ -1,4 +1,5 @@
 package agh.ics.oop;
+import java.util.Map;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -6,7 +7,6 @@ import java.util.Vector;
 public class GrassField extends AbstractWorldMap{
 
     int count;
-
 
     public GrassField(int n){
         count = n;
@@ -39,16 +39,25 @@ public class GrassField extends AbstractWorldMap{
     }
 
     @Override
-    public String toString(){
-        Vector2d botleft = mapElements.get(0).getPosition();
-        Vector2d upright = mapElements.get(0).getPosition();
-
-        for (IMapElement el:mapElements) {
-            botleft = el.getPosition().lowerLeft(botleft);
-            upright = el.getPosition().upperRight(upright);
+    public Vector2d getLowerLeftCorner(){
+        Vector2d lowleft = (Vector2d) mapElements.keySet().toArray()[0];
+        for (Map.Entry<Vector2d, IMapElement> entry: mapElements.entrySet()) {
+            Vector2d key = entry.getKey();
+            lowleft = key.lowerLeft(lowleft);
         }
-
-        String s = visualizer.draw(botleft, upright);
-        return s;
+        return lowleft;
     }
+
+    @Override
+    public Vector2d getUpperRightCorner(){
+
+        Vector2d upright = (Vector2d) mapElements.keySet().toArray()[0];
+
+        for (Map.Entry<Vector2d, IMapElement> entry: mapElements.entrySet()) {
+            Vector2d key = entry.getKey();
+            upright = key.upperRight(upright);
+        }
+        return upright;
+    }
+
 }

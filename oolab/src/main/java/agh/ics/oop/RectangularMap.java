@@ -38,11 +38,13 @@ public class RectangularMap extends AbstractWorldMap{
 
 
     @Override
-    public String toString(){
-        String s = visualizer.draw(new Vector2d(0,0), new Vector2d(width,height));
-        return s;
+    public Vector2d getLowerLeftCorner(){
+        return new Vector2d(0,0);
     }
 
-
+    @Override
+    public Vector2d getUpperRightCorner(){
+        return new Vector2d(width,height);
+    }
 
 }

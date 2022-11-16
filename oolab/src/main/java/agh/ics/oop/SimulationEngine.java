@@ -19,7 +19,7 @@ public class SimulationEngine implements IEngine{
         }
 
 
-        ArrayList<Animal> animals = map.getAnimals();
+        ArrayList<Animal> animals = map.getAnimalList();
         int count = animals.toArray().length;
         for (int i = 0; i < directions.length; i++) {
             Animal a = animals.get(i%count);

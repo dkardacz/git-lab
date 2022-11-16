@@ -1,17 +1,24 @@
 package agh.ics.oop;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class Animal implements IMapElement {
     private Vector2d position = new Vector2d(2,2);
     private MapDirection orientation = MapDirection.NORTH;
+
+    private ArrayList<IPositionChangeObserver> observers = new ArrayList<>();
 
     private IWorldMap map;
 
     public Animal(IWorldMap map){
         this.map = map;
+        addObserver((IPositionChangeObserver) map);
     }
 
     public Animal(IWorldMap map, Vector2d initialPosition){
         this.map = map;
+        addObserver((IPositionChangeObserver) map);
         this.position = initialPosition;
     }
 
@@ -40,31 +47,37 @@ public class Animal implements IMapElement {
             case LEFT -> orientation = orientation.previous();
             case RIGHT -> orientation = orientation.next();
             case FORWARD -> {
-                if(map.canMoveTo(position.add(orientation.toUnitVector()))){
-                        if(map.isOccupied(position.add(orientation.toUnitVector()))){
-                            if(map.objectAt(position.add(orientation.toUnitVector())) instanceof Grass){
-                                map.getMapElements().remove(map.objectAt(position.add(orientation.toUnitVector())));
+                Vector2d oldpos = position;
+                Vector2d newpos = position.add(orientation.toUnitVector());
+                if(map.canMoveTo(newpos)){
+                        if(map.isOccupied(newpos)){
+                            if(map.objectAt(newpos) instanceof Grass){
+                                map.getMapElements().remove(map.objectAt(newpos));
                                 if(map instanceof GrassField){
                                     GrassField gmap = (GrassField) map;
                                     gmap.generateGrass();
                                 }
                             }
                         }
-                        position = position.add(orientation.toUnitVector());
+                        position = newpos;
+                        positionChanged(oldpos,newpos);
                         }
             }
             case BACKWARD -> {
-                if(map.canMoveTo(position.subtract(orientation.toUnitVector()))){
-                    if(map.isOccupied(position.subtract(orientation.toUnitVector()))){
-                        if(map.objectAt(position.subtract(orientation.toUnitVector())) instanceof Grass){
-                            map.getMapElements().remove(map.objectAt(position.subtract(orientation.toUnitVector())));
+                Vector2d oldpos = position;
+                Vector2d newpos = position.subtract(orientation.toUnitVector());
+                if(map.canMoveTo(newpos)){
+                    if(map.isOccupied(newpos)){
+                        if(map.objectAt(newpos) instanceof Grass){
+                            map.getMapElements().remove(map.objectAt(newpos));
                             if(map instanceof GrassField){
                                 GrassField gmap = (GrassField) map;
                                 gmap.generateGrass();
                             }
                         }
                     }
-                    position = position.subtract(orientation.toUnitVector());
+                    position = newpos;
+                    positionChanged(oldpos,newpos);
                 }
             }
         }
@@ -74,6 +87,19 @@ public class Animal implements IMapElement {
         return orientation;
     }
 
+    void addObserver(IPositionChangeObserver observer){
+        observers.add(observer);
+    }
+
+    void removeObserver(IPositionChangeObserver observer){
+        observers.remove(observer);
+    }
+
+    void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+        for (IPositionChangeObserver o: observers) {
+            o.positionChanged(oldPosition, newPosition);
+        }
+    }
     public Vector2d getPosition(){
         return position;
     }
