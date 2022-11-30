@@ -14,11 +14,13 @@ public class Animal implements IMapElement {
     public Animal(IWorldMap map){
         this.map = map;
         addObserver((IPositionChangeObserver) map);
+        addObserver((IPositionChangeObserver) map.getMapBoundry());
     }
 
     public Animal(IWorldMap map, Vector2d initialPosition){
         this.map = map;
         addObserver((IPositionChangeObserver) map);
+        addObserver((IPositionChangeObserver) map.getMapBoundry());
         this.position = initialPosition;
     }
 

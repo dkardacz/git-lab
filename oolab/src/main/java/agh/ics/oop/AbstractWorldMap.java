@@ -7,8 +7,11 @@ import java.util.Map;
 abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
 
     protected MapVisualizer visualizer = new MapVisualizer(this);
+
+
     //protected ArrayList<IMapElement> mapElements = new ArrayList<>();
     protected Map<Vector2d, IMapElement> mapElements = new HashMap<>();
+    public MapBoundry mapBoundry = new MapBoundry(this);
     public boolean isOccupied(Vector2d position){
         return (objectAt(position)!=null);
     }
@@ -16,17 +19,23 @@ abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     public abstract boolean canMoveTo(Vector2d position);
 
     public boolean place(IMapElement el){
-        if(isOccupied(el.getPosition())){
-            return false;
+        System.out.print(mapBoundry);
+        Vector2d pos = el.getPosition();
+        if(isOccupied(pos)){
+            throw new IllegalArgumentException(pos + " is already occupied, can't place");
         }
         else{
             mapElements.put(el.getPosition(),el);
+            mapBoundry.addItem(el);
             return true;
         }
     }
 
     public Object objectAt(Vector2d position){
-        return mapElements.get(position);
+        if(mapElements.containsKey(position)){
+            return mapElements.get(position);
+        }
+        return null;
     }
     public Map<Vector2d, IMapElement> getMapElements(){
         return mapElements;
@@ -61,7 +70,8 @@ abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     public abstract Vector2d getUpperRightCorner();
 
     public String toString(){
-        String s = visualizer.draw(getLowerLeftCorner(), getUpperRightCorner());
+        System.out.println("boundires: "+ mapBoundry.getLowerLeft() + ", " + mapBoundry.getUpperRight());
+        String s = visualizer.draw(mapBoundry.getLowerLeft(), mapBoundry.getUpperRight());
         return s;
     }
 
@@ -69,5 +79,10 @@ abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
         IMapElement el = mapElements.get(oldPosition);
         mapElements.remove(oldPosition, el);
         mapElements.put(newPosition, el);
+    }
+
+    @Override
+    public MapBoundry getMapBoundry() {
+        return mapBoundry;
     }
 }

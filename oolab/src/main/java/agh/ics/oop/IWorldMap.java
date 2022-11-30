@@ -51,6 +51,7 @@ public interface IWorldMap {
     Map<Vector2d, IMapElement> getMapElements();
     Map<Vector2d, Animal> getAnimals();
 
+    MapBoundry getMapBoundry();
     ArrayList<Animal> getAnimalList();
     String toString();
 }
