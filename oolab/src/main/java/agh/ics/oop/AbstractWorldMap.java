@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import agh.ics.oop.gui.App;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +14,7 @@ abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     //protected ArrayList<IMapElement> mapElements = new ArrayList<>();
     protected Map<Vector2d, IMapElement> mapElements = new HashMap<>();
     public MapBoundry mapBoundry = new MapBoundry(this);
+
     public boolean isOccupied(Vector2d position){
         return (objectAt(position)!=null);
     }

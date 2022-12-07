@@ -1,4 +1,6 @@
 package agh.ics.oop;
+import agh.ics.oop.gui.App;
+
 import java.util.Map;
 import java.util.Random;
 import java.util.ArrayList;
@@ -7,7 +9,6 @@ import java.util.Vector;
 public class GrassField extends AbstractWorldMap{
 
     int count;
-
     public GrassField(int n){
         count = n;
         for (int i = 0; i < n; i++) {
@@ -59,5 +60,6 @@ public class GrassField extends AbstractWorldMap{
         }
         return upright;
     }
+
 
 }

@@ -1,10 +1,13 @@
 package agh.ics.oop;
 
+import agh.ics.oop.gui.App;
+
 import java.util.ArrayList;
 
 public class SimulationEngine implements IEngine{
     private MoveDirection[] directions;
     private IWorldMap map;
+
     private Vector2d[] positions;
 
     public SimulationEngine(MoveDirection[] directions, IWorldMap map, Vector2d[] positions){

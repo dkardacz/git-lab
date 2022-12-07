@@ -15,4 +15,5 @@ public class Grass implements IMapElement{
     public String toString(){
         return "*";
     }
+    public String getTextureURL(){return "src/main/resources/grass.jpeg";}
 }

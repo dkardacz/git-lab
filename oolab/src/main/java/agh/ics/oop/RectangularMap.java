@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import agh.ics.oop.gui.App;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,5 +48,4 @@ public class RectangularMap extends AbstractWorldMap{
     public Vector2d getUpperRightCorner(){
         return new Vector2d(width,height);
     }
-
 }

@@ -21,6 +21,7 @@ public class Animal implements IMapElement {
         this.map = map;
         addObserver((IPositionChangeObserver) map);
         addObserver((IPositionChangeObserver) map.getMapBoundry());
+
         this.position = initialPosition;
     }
 
@@ -31,6 +32,16 @@ public class Animal implements IMapElement {
             case EAST -> ">";
             case SOUTH -> "v";
             case WEST -> "<";
+        };
+        return res;
+    }
+
+    public String getTextureURL(){
+        String res = switch(orientation){
+            case NORTH -> "src/main/resources/up.jpeg";
+            case EAST -> "src/main/resources/right.jpeg";
+            case SOUTH -> "src/main/resources/down.jpeg";
+            case WEST -> "src/main/resources/left.jpeg";
         };
         return res;
     }
